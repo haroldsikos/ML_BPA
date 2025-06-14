@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # --- Título de la aplicación ---
-st.title('📈 Predicción de Ventas por Avisos Publicitarios')
+st.title('📈 G1 - 3997 - Predicción de Ventas por Avisos Publicitarios')
 st.markdown("---")
 st.write('Ingresa la inversión en TV, Radio y Periódico para estimar las ventas de tu tienda.')
 
