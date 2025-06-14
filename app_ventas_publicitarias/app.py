@@ -1,7 +1,8 @@
 import streamlit as st
 import joblib
 import pandas as pd
-import numpy as np # Importar numpy si lo usas para array como en tu notebook
+import numpy as np
+import os # ¡IMPORTANTE: Añade esta línea para usar os.getcwd() y os.listdir()!
 
 # --- Configuración de la página ---
 st.set_page_config(
@@ -15,15 +16,40 @@ st.title('📈 Predicción de Ventas por Avisos Publicitarios')
 st.markdown("---")
 st.write('Ingresa la inversión en TV, Radio y Periódico para estimar las ventas de tu tienda.')
 
+# --- INICIO DE SECCIÓN DE DEPURACIÓN ---
+st.subheader("Información de Depuración (Eliminar después de resolver el error)")
+current_dir = os.getcwd()
+st.write(f"Directorio de trabajo actual (os.getcwd()): `{current_dir}`")
+
+try:
+    files_in_dir = os.listdir(current_dir)
+    st.write("Archivos visibles en el directorio actual:")
+    st.code(files_in_dir) # Usamos st.code para mejor visualización de la lista
+    if 'modelo_regresion_lineal.pkl' in files_in_dir and 'scaler.pkl' in files_in_dir:
+        st.success("¡Los archivos .pkl SÍ son visibles en el directorio actual!")
+    else:
+        st.warning("Advertencia: Los archivos .pkl NO son visibles en el directorio actual.")
+        # Opcional: Si los archivos no se ven, podrías listar también el directorio padre si existiera
+        # parent_dir = os.path.dirname(current_dir)
+        # st.write(f"Archivos en el directorio padre ({parent_dir}):")
+        # st.code(os.listdir(parent_dir))
+
+except Exception as e:
+    st.error(f"Error al intentar listar archivos en el directorio actual: {e}")
+st.markdown("---") # Separador para la depuración
+# --- FIN DE SECCIÓN DE DEPURACIÓN ---
+
+
 # --- Cargar el modelo y el escalador ---
 # Asegúrate de que 'modelo_regresion_lineal.pkl' y 'scaler.pkl'
 # estén en el mismo directorio que este script.
 try:
     modelo_rl = joblib.load('modelo_regresion_lineal.pkl')
     scaler = joblib.load('scaler.pkl')
+    st.success("✅ Modelo y escalador cargados exitosamente por el código principal.") # Nuevo mensaje de éxito si carga
 except FileNotFoundError:
-    st.error("Error: Archivos de modelo o escalador no encontrados.")
-    st.info("Por favor, asegúrate de que 'modelo_regresion_lineal.pkl' y 'scaler.pkl' estén en el mismo directorio que 'app.py'.")
+    st.error("❌ Error: Archivos de modelo o escalador no encontrados por joblib.load().")
+    st.info("Por favor, asegúrate de que 'modelo_regresion_lineal.pkl' y 'scaler.pkl' estén en el mismo directorio que 'app.py' o ajusta la ruta si es necesario.")
     st.stop() # Detiene la ejecución de la app si los archivos no están.
 
 # --- Definir las características de entrada ---
