@@ -6,7 +6,7 @@ import numpy as np
 
 # --- Configuración de la página ---
 st.set_page_config(
-    page_title="Predicción de Ventas de Avisos Publicitarios",
+    page_title="G1 - 3997 - Predicción de Ventas de Avisos Publicitarios",
     page_icon="📈",
     layout="centered"
 )
